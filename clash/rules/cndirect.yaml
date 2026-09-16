@@ -1,0 +1,15 @@
+payload:
+  - DOMAIN-SUFFIX,servicewechat.com
+  - DOMAIN-SUFFIX,tencent.com
+  - DOMAIN-SUFFIX,qq.com
+  - DOMAIN-SUFFIX,url.cn
+  - DOMAIN-SUFFIX,weixinbridge.com
+  - DOMAIN-SUFFIX,workbuddy.cn
+  - DOMAIN-SUFFIX,codebuddy.cn
+  - DOMAIN-SUFFIX,codebuddy.work
+  - DOMAIN-SUFFIX,workbuddy.link
+  - DOMAIN-SUFFIX,cnb.cool
+  - DOMAIN-SUFFIX,myqcloud.com
+  - DOMAIN-SUFFIX,tcloudbaseapp.com
+  - DOMAIN-SUFFIX,feishu.cn
+  - DOMAIN-SUFFIX,feishucdn.com
