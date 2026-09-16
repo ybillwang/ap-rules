@@ -1,0 +1,201 @@
+# ============================================================
+# Rule Providers
+# ============================================================
+
+rule-providers:
+
+  ads:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: "https://github.com/ybillwang/ap-rules/raw/refs/heads/main/clash/rules/ads.yaml"
+    path: ./ruleset/ads.yaml
+    proxy: "🇺🇸 美国节点 [系统]"
+
+  ai:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: "https://github.com/ybillwang/ap-rules/raw/refs/heads/main/clash/rules/ai.yaml"
+    path: ./ruleset/ai.yaml
+    proxy: "🇺🇸 美国节点 [系统]"
+
+  cndirect:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: "https://github.com/ybillwang/ap-rules/raw/refs/heads/main/clash/rules/cndirect.yaml"
+    path: ./ruleset/cndirect.yaml
+    proxy: "🇺🇸 美国节点 [系统]"
+
+
+
+# ============================================================
+# Proxy Groups
+# ============================================================
+
+proxy-groups:
+
+  # ---------- 用户自选组 ----------
+
+  - name: "🚀 默认代理 [自选]"
+    type: select
+    proxies:
+      - "♻️ 自动选择 [系统]"
+      - "🇭🇰 香港节点 [系统]"
+      - "🇯🇵 日本节点 [系统]"
+      - "🇸🇬 新加坡节点 [系统]"
+      - "🇺🇸 美国节点 [系统]"
+      - "🇹🇼 台湾节点 [系统]"
+      - "🌍 其他地区 [系统]"
+      - "🌐 全部节点 [系统]"
+
+  - name: "🤖 AI服务 [自选]"
+    type: select
+    proxies:
+      - "🇺🇸 美国节点 [系统]"
+      - "🇯🇵 日本节点 [系统]"
+      - "🇸🇬 新加坡节点 [系统]"
+      - "🇭🇰 香港节点 [系统]"
+      - "🇹🇼 台湾节点 [系统]"
+      - "🌍 其他地区 [系统]"
+      - "🌐 全部节点 [系统]"
+      - DIRECT
+
+  # ---------- 系统组 ----------
+
+  - name: "🌐 全部节点 [系统]"
+    type: select
+    include-all-proxies: true
+    exclude-type: "Direct"
+
+  - name: "♻️ 自动选择 [系统]"
+    type: url-test
+    include-all-proxies: true
+    exclude-type: "Direct"
+    exclude-filter: "(?i)官网|流量|剩余|到期|过期|套餐|订阅|重置|traffic|expire|expired|subscription|reset|official|website"
+    url: "https://cp.cloudflare.com/generate_204"
+    interval: 300
+    tolerance: 50
+    lazy: true
+
+
+  # ==========================================================
+  # 地区节点
+  # ==========================================================
+
+  - name: "🇭🇰 香港节点 [系统]"
+    type: url-test
+    include-all-proxies: true
+    filter: '(?i)🇭🇰|香港|港|\bHK\b|\bHKG\b|Hong[ -]?Kong'
+    exclude-filter: '(?i)官网|流量|剩余|到期|过期|套餐|订阅|重置|traffic|expire|expired|subscription|reset|official|website'
+    exclude-type: "Direct"
+    url: "https://cp.cloudflare.com/generate_204"
+    interval: 300
+    tolerance: 50
+    lazy: true
+
+  - name: "🇯🇵 日本节点 [系统]"
+    type: url-test
+    include-all-proxies: true
+    filter: '(?i)🇯🇵|日本|日|\bJP\b|\bJPN\b|Japan|Tokyo|Osaka'
+    exclude-filter: '(?i)官网|流量|剩余|到期|过期|套餐|订阅|重置|traffic|expire|expired|subscription|reset|official|website'
+    exclude-type: "Direct"
+    url: "https://cp.cloudflare.com/generate_204"
+    interval: 300
+    tolerance: 50
+    lazy: true
+
+  - name: "🇸🇬 新加坡节点 [系统]"
+    type: url-test
+    include-all-proxies: true
+    filter: '(?i)🇸🇬|新加坡|新国|\bSG\b|\bSGP\b|Singapore'
+    exclude-filter: '(?i)官网|流量|剩余|到期|过期|套餐|订阅|重置|traffic|expire|expired|subscription|reset|official|website'
+    exclude-type: "Direct"
+    url: "https://cp.cloudflare.com/generate_204"
+    interval: 300
+    tolerance: 50
+    lazy: true
+
+  - name: "🇺🇸 美国节点 [系统]"
+    type: url-test
+    include-all-proxies: true
+    filter: '(?i)🇺🇸|美国|美|\bUS\b|\bUSA\b|United[ -]?States|America|Los[ -]?Angeles|New[ -]?York|San[ -]?Francisco'
+    exclude-filter: '(?i)官网|流量|剩余|到期|过期|套餐|订阅|重置|traffic|expire|expired|subscription|reset|official|website'
+    exclude-type: "Direct"
+    url: "https://cp.cloudflare.com/generate_204"
+    interval: 300
+    tolerance: 50
+    lazy: true
+
+  - name: "🇹🇼 台湾节点 [系统]"
+    type: url-test
+    include-all-proxies: true
+    filter: '(?i)🇹🇼|台湾|台|\bTW\b|\bTWN\b|Taiwan|Taipei'
+    exclude-filter: '(?i)官网|流量|剩余|到期|过期|套餐|订阅|重置|traffic|expire|expired|subscription|reset|official|website'
+    exclude-type: "Direct"
+    url: "https://cp.cloudflare.com/generate_204"
+    interval: 300
+    tolerance: 50
+    lazy: true
+
+
+  # ==========================================================
+  # 其他地区
+  #
+  # 除香港 / 日本 / 新加坡 / 美国 / 台湾之外，
+  # 其它所有代理节点自动进入此组。
+  #
+  # 这样无论机场出现德国、加拿大、英国、越南、印度，
+  # 还是未来出现法国、荷兰、澳大利亚、巴西等节点，
+  # 都不需要再次修改配置。
+  # ==========================================================
+
+  - name: "🌍 其他地区 [系统]"
+    type: select
+    include-all-proxies: true
+    filter: '(?i)^(?!.*(?:🇭🇰|🇯🇵|🇸🇬|🇺🇸|🇹🇼|香港|日本|新加坡|美国|台湾|\bHK\b|\bHKG\b|\bJP\b|\bJPN\b|\bSG\b|\bSGP\b|\bUS\b|\bUSA\b|\bTW\b|\bTWN\b|Hong[ -]?Kong|Japan|Tokyo|Osaka|Singapore|United[ -]?States|America|Los[ -]?Angeles|New[ -]?York|San[ -]?Francisco|Taiwan|Taipei)).*'
+    exclude-filter: '(?i)官网|流量|剩余|到期|过期|套餐|订阅|重置|traffic|expire|expired|subscription|reset|official|website'
+    exclude-type: "Direct"
+
+
+  # ---------- 广告拦截 ----------
+
+  - name: "🛑 广告拦截 [系统]"
+    type: select
+    proxies:
+      - REJECT
+      - DIRECT
+
+
+# ============================================================
+# Rules
+# ============================================================
+
+rules:
+  # fallback dns
+  - 'IP-CIDR,1.1.1.1/32,🚀 默认代理 [自选],no-resolve'
+  - 'IP-CIDR,8.8.8.8/32,🚀 默认代理 [自选],no-resolve'
+
+  # 自定义中国直连
+  - "RULE-SET,cndirect,DIRECT"
+
+  # 私有地址 / 局域网
+  - "GEOSITE,private,DIRECT"
+  - "GEOIP,private,DIRECT,no-resolve"
+
+  # 广告
+  - "RULE-SET,ads,🛑 广告拦截 [系统]"
+
+  # AI
+  - "RULE-SET,ai,🤖 AI服务 [自选]"
+
+  # 中国大陆
+  - "GEOSITE,CN,DIRECT"
+  - "GEOIP,CN,DIRECT,no-resolve"
+
+  # 其他流量
+  - "MATCH,🚀 默认代理 [自选]"
