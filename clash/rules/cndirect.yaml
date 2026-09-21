@@ -8,6 +8,7 @@ payload:
   - DOMAIN-SUFFIX,codebuddy.cn
   - DOMAIN-SUFFIX,codebuddy.work
   - DOMAIN-SUFFIX,workbuddy.link
+  - DOMAIN-SUFFIX,workbuddy.host
   - DOMAIN-SUFFIX,cnb.cool
   - DOMAIN-SUFFIX,myqcloud.com
   - DOMAIN-SUFFIX,tcloudbaseapp.com
