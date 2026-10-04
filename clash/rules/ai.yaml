@@ -1,2 +1,4 @@
 payload:
   - GEOSITE,category-ai-!cn
+  - DOMAIN-SUFFIX,coreweave.com
+  - DOMAIN-SUFFIX,wandb.ai
