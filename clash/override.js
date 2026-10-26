@@ -67,6 +67,27 @@ const GROUP_DEFAULT = '🚀 默认代理 [自选]';
 const GROUP_AI = '🤖 AI服务 [自选]';
 
 /* ------------------------------------------------------------
+ * GLOBAL 模式默认节点
+ *
+ * Mihomo 内核逻辑（config.go parseProxies）：只有当配置里「没有」名为
+ * GLOBAL 的代理组时，内核才会自动补建一个 GLOBAL 选择器。
+ * 所以只要在脚本里自己定义 GLOBAL，就能完全接管全局模式；
+ * 再用 select 组支持的 default-selected 字段指定默认出口。
+ *
+ * 参考源码：
+ *   https://github.com/MetaCubeX/mihomo/blob/Meta/config/config.go
+ *   https://github.com/MetaCubeX/mihomo/blob/Meta/adapter/outboundgroup/selector.go
+ * ---------------------------------------------------------- */
+
+const GROUP_GLOBAL = 'GLOBAL';
+const GLOBAL_DEFAULT = '🇺🇸 美国节点 [系统]';
+
+// 是否强制每次载入都回到默认节点（关闭「记住选择」）。
+// 开启后 Clash Verge 不会再恢复上一次在 GLOBAL 里的选择，切到全局模式必然是美国节点。
+// 注意：这会同时影响所有其它分组的选择记忆。
+const GLOBAL_FORCE_DEFAULT = false;
+
+/* ------------------------------------------------------------
  * 工具函数
  * ---------------------------------------------------------- */
 
@@ -232,7 +253,39 @@ function buildProxyGroups(config) {
   // ---------- 广告拦截 ----------
   groups.push(selectGroup(GROUP_ADS, ['REJECT', 'DIRECT']));
 
+  // ---------- GLOBAL（全局模式）----------
+  groups.push(buildGlobalGroup(groups));
+
   return groups;
+}
+
+// 自建 GLOBAL 组：接管「全局模式」的出口
+//
+// include-all-proxies 会把订阅里的所有节点追加到 proxies 后面，
+// 所以显式部分只需列出「分组」+ DIRECT；
+// 把 GLOBAL_DEFAULT 放在第一位，既直观，也作为不支持 default-selected
+// 的老内核的兜底（那种内核会默认选中列表第一项）。
+function buildGlobalGroup(builtGroups) {
+  var groupNames = builtGroups
+    .map(function (g) { return g.name; })
+    .filter(function (n) { return n !== GROUP_GLOBAL; });
+
+  // 保证默认项排在最前；其余分组保持原有顺序
+  var ordered = [GLOBAL_DEFAULT];
+  groupNames.forEach(function (n) {
+    if (n !== GLOBAL_DEFAULT) {
+      ordered.push(n);
+    }
+  });
+
+  return {
+    name: GROUP_GLOBAL,
+    type: 'select',
+    'include-all-proxies': true,
+    'exclude-filter': '(?:' + EXCLUDE_RE.source + ')',
+    proxies: ordered.concat(['DIRECT']),
+    'default-selected': GLOBAL_DEFAULT,
+  };
 }
 
 /* ------------------------------------------------------------
@@ -277,6 +330,12 @@ function main(config, profileName) {
   config['rule-providers'] = buildRuleProviders();
   config['proxy-groups'] = buildProxyGroups(config);
   config['rules'] = buildRules();
+
+  // 可选：关闭「记住选择」，确保每次载入都回到 GLOBAL_DEFAULT
+  if (GLOBAL_FORCE_DEFAULT) {
+    config.profile = config.profile || {};
+    config.profile['store-selected'] = false;
+  }
 
   return config;
 }
