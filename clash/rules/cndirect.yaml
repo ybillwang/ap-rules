@@ -15,3 +15,9 @@ payload:
   - DOMAIN-SUFFIX,feishu.cn
   - DOMAIN-SUFFIX,feishucdn.com
   - DOMAIN-SUFFIX,qianwenaiapi.com
+  - DOMAIN-SUFFIX,apple.com
+  - DOMAIN-SUFFIX,apple.com.cn
+  - DOMAIN-SUFFIX,icloud.com
+  - DOMAIN-SUFFIX,cdn-apple.com
+  - DOMAIN-SUFFIX,aaplimg.com
+
